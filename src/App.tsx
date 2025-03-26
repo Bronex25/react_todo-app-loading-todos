@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useMemo, useState } from 'react';
@@ -52,13 +53,19 @@ export const App: React.FC = () => {
   useEffect(() => {
     getTodos()
       .then(setTodos)
-      .catch(() => setErrorMessage('Unable to Unable to load todos'));
+      .catch(() => setErrorMessage('Unable to load todos'));
   }, []);
 
   useEffect(() => {
+    let timerId: NodeJS.Timeout;
+
     if (errorMessage) {
-      setTimeout(() => setErrorMessage(''), 3000);
+      timerId = setTimeout(() => setErrorMessage(''), 3000);
     }
+
+    return () => {
+      clearTimeout(timerId);
+    };
   }, [errorMessage]);
 
   if (!USER_ID) {
